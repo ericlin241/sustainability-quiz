@@ -203,11 +203,11 @@
 
         <!-- Radar Chart Container -->
         <div class="bg-slate-50/90 rounded-2xl p-3 sm:p-4 mb-5 border border-slate-100 flex flex-col items-center">
-          <div class="text-xs font-bold text-slate-600 mb-1 flex items-center gap-1">
+          <div class="text-xs sm:text-sm font-bold text-slate-700 mb-2 flex items-center gap-1.5">
             <span>📊</span> 永續公民 5 維能力光譜
           </div>
-          <div class="w-full max-w-[280px] sm:max-w-[320px] aspect-square flex items-center justify-center">
-            <canvas id="radarCanvas" width="320" height="320" class="w-full h-full"></canvas>
+          <div class="w-full max-w-[360px] aspect-[400/360] flex items-center justify-center">
+            <canvas id="radarCanvas" width="800" height="720" class="w-full h-auto drop-shadow-sm"></canvas>
           </div>
         </div>
 
@@ -263,7 +263,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
         <button id="btn-download" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-1.5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          <span>下載結果卡片 (PNG)</span>
+          <span>下載結果卡片</span>
         </button>
         <button id="btn-copy" class="py-3 px-4 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
@@ -433,6 +433,7 @@
     // State Variables
     let currentQ = 0;
     let answers = [];
+    let currentScoreData = [80, 80, 80, 80, 80];
     const scores = { ARCHITECT: 0, GUARDIAN: 0, JUSTICE: 0, VANGUARD: 0 };
 
     // Elements
@@ -596,6 +597,7 @@
       document.getElementById('result-petpeeve').textContent = data.petpeeve;
       document.getElementById('result-action').textContent = data.action;
 
+      currentScoreData = data.scores;
       // Draw Radar Chart
       setTimeout(() => {
         drawRadarChart(data.scores);
@@ -604,25 +606,18 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Draw Radar Chart on HTML5 Canvas
-    function drawRadarChart(scoreValues) {
-      const canvas = document.getElementById('radarCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const width = canvas.width;
-      const height = canvas.height;
+    // Draw ultra-clear Radar Chart on HTML5 Canvas (Zero Clipping & Retina Sharp)
+    function drawRadarCore(ctx, width, height, scoreValues, isExport) {
       const centerX = width / 2;
-      const centerY = height / 2;
-      const radius = width * 0.38;
-
-      ctx.clearRect(0, 0, width, height);
+      const centerY = height * 0.52;
+      const radius = width * (isExport ? 0.32 : 0.30);
 
       const labels = ["減碳實力", "空間工法", "生態感知", "政策敏銳", "行動爆發"];
       const totalPoints = labels.length;
       const angleStep = (Math.PI * 2) / totalPoints;
 
-      // Draw concentric pentagons (grid)
-      const levels = 4;
+      // Draw concentric pentagons (Web grid)
+      const levels = 5;
       for (let level = 1; level <= levels; level++) {
         const r = (radius / levels) * level;
         ctx.beginPath();
@@ -634,12 +629,21 @@
           else ctx.lineTo(x, y);
         }
         ctx.closePath();
-        ctx.strokeStyle = "rgba(148, 163, 184, 0.28)";
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = level === levels ? "rgba(100, 116, 139, 0.45)" : "rgba(148, 163, 184, 0.22)";
+        ctx.lineWidth = level === levels ? (isExport ? 3 : 2) : (isExport ? 2 : 1.5);
         ctx.stroke();
+
+        // Level percentage hint
+        if (level === levels || level === 3) {
+          ctx.font = `${isExport ? 16 : 11}px sans-serif`;
+          ctx.fillStyle = "rgba(148, 163, 184, 0.7)";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(`${level * 20}`, centerX, centerY - r + (isExport ? 12 : 7));
+        }
       }
 
-      // Draw axes
+      // Draw Axes from center
       for (let i = 0; i < totalPoints; i++) {
         const angle = i * angleStep - Math.PI / 2;
         const x = centerX + Math.cos(angle) * radius;
@@ -647,51 +651,110 @@
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(x, y);
-        ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+        ctx.lineWidth = isExport ? 2 : 1.5;
         ctx.stroke();
-
-        // Draw Labels
-        const labelRadius = radius + 22;
-        const lx = centerX + Math.cos(angle) * labelRadius;
-        const ly = centerY + Math.sin(angle) * labelRadius;
-        ctx.font = "bold 13px 'Noto Sans TC', sans-serif";
-        ctx.fillStyle = "#334155";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(labels[i], lx, ly);
       }
 
-      // Draw Data Polygon
+      // Draw Data Filled Polygon
       ctx.beginPath();
       for (let i = 0; i < totalPoints; i++) {
         const angle = i * angleStep - Math.PI / 2;
-        const normalizedVal = (scoreValues[i] / 100) * radius;
+        const val = scoreValues[i] || 80;
+        const normalizedVal = (val / 100) * radius;
         const x = centerX + Math.cos(angle) * normalizedVal;
         const y = centerY + Math.sin(angle) * normalizedVal;
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.fillStyle = "rgba(16, 185, 129, 0.32)";
+      const fillGradient = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, radius);
+      fillGradient.addColorStop(0, "rgba(52, 211, 153, 0.45)");
+      fillGradient.addColorStop(1, "rgba(16, 185, 129, 0.28)");
+      ctx.fillStyle = fillGradient;
       ctx.fill();
+
+      // Border of Data Polygon
       ctx.strokeStyle = "#059669";
-      ctx.lineWidth = 3;
+      ctx.lineWidth = isExport ? 5 : 3.5;
+      ctx.lineJoin = "round";
       ctx.stroke();
 
-      // Draw Data Points
+      // Data Points & Highlights
       for (let i = 0; i < totalPoints; i++) {
         const angle = i * angleStep - Math.PI / 2;
-        const normalizedVal = (scoreValues[i] / 100) * radius;
+        const val = scoreValues[i] || 80;
+        const normalizedVal = (val / 100) * radius;
         const x = centerX + Math.cos(angle) * normalizedVal;
         const y = centerY + Math.sin(angle) * normalizedVal;
+
+        // Outer glow circle
         ctx.beginPath();
-        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.arc(x, y, isExport ? 8 : 6, 0, Math.PI * 2);
         ctx.fillStyle = "#ffffff";
         ctx.fill();
         ctx.strokeStyle = "#047857";
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = isExport ? 4 : 3;
         ctx.stroke();
       }
+
+      // Draw Labels with Intelligent Positioning (Never Clipped)
+      for (let i = 0; i < totalPoints; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const val = scoreValues[i] || 80;
+        const offset = isExport ? 36 : 24;
+        const lx = centerX + Math.cos(angle) * (radius + offset);
+        const ly = centerY + Math.sin(angle) * (radius + offset);
+
+        ctx.font = `bold ${isExport ? 26 : 15}px "Noto Sans TC", sans-serif`;
+
+        if (i === 0) {
+          // Top: 減碳實力
+          ctx.textAlign = "center";
+          ctx.textBaseline = "bottom";
+        } else if (i === 1) {
+          // Top-Right: 空間工法
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+        } else if (i === 2) {
+          // Bottom-Right: 生態感知
+          ctx.textAlign = "left";
+          ctx.textBaseline = "top";
+        } else if (i === 3) {
+          // Bottom-Left: 政策敏銳
+          ctx.textAlign = "right";
+          ctx.textBaseline = "top";
+        } else if (i === 4) {
+          // Top-Left: 行動爆發
+          ctx.textAlign = "right";
+          ctx.textBaseline = "middle";
+        }
+
+        // Draw label text
+        ctx.fillStyle = "#1e293b";
+        ctx.fillText(labels[i], lx, ly);
+
+        // Draw score badge
+        ctx.font = `bold ${isExport ? 22 : 13}px sans-serif`;
+        ctx.fillStyle = "#059669";
+        const scoreStr = ` ${val}`;
+        if (ctx.textAlign === "left") {
+          ctx.fillText(scoreStr, lx + (isExport ? 105 : 62), ly);
+        } else if (ctx.textAlign === "right") {
+          ctx.fillText(scoreStr, lx - (isExport ? 105 : 62), ly);
+        } else {
+          ctx.fillText(scoreStr, lx, ly + (isExport ? 26 : 16));
+        }
+      }
+    }
+
+    function drawRadarChart(scoreValues) {
+      const canvas = document.getElementById('radarCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      // Logical width: 800 x 720 (Crisp on 4K & Mobile Retina)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawRadarCore(ctx, canvas.width, canvas.height, scoreValues, false);
     }
 
     // Restart Button
@@ -787,9 +850,11 @@
       ctx.fillStyle = '#0f172a';
       ctx.fillText(title, 540, 440);
 
-      // Draw Radar Chart from main canvas
-      const radarSrc = document.getElementById('radarCanvas');
-      ctx.drawImage(radarSrc, 340, 470, 400, 400);
+      // Draw Radar Chart directly in high-res (No stretching, vector clarity)
+      ctx.save();
+      ctx.translate(140, 430);
+      drawRadarCore(ctx, 800, 440, currentScoreData, true);
+      ctx.restore();
 
       // Description Box
       ctx.fillStyle = '#f8fafc';
