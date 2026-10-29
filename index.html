@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>測測你的「2050 永續公民屬性」！ | 永續公民實踐期中特別企劃</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', '"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            forest: {
+              50: '#f2f8f4',
+              100: '#e1f0e6',
+              500: '#2d8653',
+              600: '#226b42',
+              700: '#1c5535',
+              800: '#17432b',
+              900: '#0f2c1c',
+            },
+            leaf: '#10b981',
+            sun: '#f59e0b',
+            ocean: '#0ea5e9',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth transitions and custom touches */
+    body {
+      background: radial-gradient(circle at 15% 15%, #f0fdf4 0%, #ecfdf5 25%, #f8fafc 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 10px 30px -5px rgba(22, 101, 52, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    }
+    .option-btn {
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .option-btn:hover {
+      transform: translateY(-2px);
+      border-color: #10b981;
+      background: #f0fdf4;
+      box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.15);
+    }
+    .option-btn:active {
+      transform: scale(0.985);
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.88; transform: scale(1.02); }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2.8s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center p-3 sm:p-6 md:p-8 antialiased selection:bg-emerald-200">
+
+  <!-- Main Container -->
+  <main class="w-full max-w-xl mx-auto">
+
+    <!-- ==================== SCREEN 1: INTRO ==================== -->
+    <section id="screen-intro" class="glass-card rounded-3xl p-6 sm:p-9 text-center transition-all duration-300">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-semibold tracking-wide mb-5">
+        <span>🌱</span>
+        <span>《永續公民實踐》期中創意特輯</span>
+      </div>
+
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight mb-4">
+        測測你的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-forest-700">「2050 永續公民屬性」</span>！
+      </h1>
+
+      <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+        課堂簡報說：<strong>「從現在算起，距離 2050 年僅剩 24 年」</strong>。<br class="hidden sm:inline">
+        當氣候變遷遇上產業重塑，在這座島嶼上的你，究竟是哪一種推動未來的關鍵物種？
+      </p>
+
+      <!-- Highlights / Pills -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-8 text-xs sm:text-sm font-medium text-slate-700">
+        <div class="bg-slate-50/80 border border-slate-100 rounded-2xl p-2.5 flex flex-col items-center justify-center">
+          <span class="text-xl mb-1">⏱️</span>
+          <span>6 題情境直覺</span>
+        </div>
+        <div class="bg-slate-50/80 border border-slate-100 rounded-2xl p-2.5 flex flex-col items-center justify-center">
+          <span class="text-xl mb-1">📊</span>
+          <span>5 維永續雷達</span>
+        </div>
+        <div class="bg-slate-50/80 border border-slate-100 rounded-2xl p-2.5 flex flex-col items-center justify-center">
+          <span class="text-xl mb-1">📸</span>
+          <span>一鍵下載結果卡</span>
+        </div>
+      </div>
+
+      <!-- Start Button -->
+      <button id="btn-start" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-700/25 hover:shadow-xl hover:from-emerald-500 hover:to-teal-600 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+        <span>啟動時空測驗</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+      </button>
+
+      <div class="mt-6 text-[11px] sm:text-xs text-slate-400">
+        整合課堂：IPCC AR6 氣候世代 · 澄毓 EEWH 綠建築 · 離岸風電生態監測 · 國家人權委員會 ESG
+      </div>
+    </section>
+
+    <!-- ==================== SCREEN 2: QUIZ ==================== -->
+    <section id="screen-quiz" class="hidden glass-card rounded-3xl p-5 sm:p-8 transition-all duration-300">
+      <!-- Progress Bar & Step -->
+      <div class="mb-5 sm:mb-7">
+        <div class="flex justify-between items-center text-xs sm:text-sm font-semibold text-slate-500 mb-2">
+          <span id="quiz-step-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs">問題 1 / 6</span>
+          <span id="quiz-progress-text" class="text-emerald-700 font-bold">16%</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div id="quiz-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-600 h-2 rounded-full transition-all duration-300" style="width: 16%;"></div>
+        </div>
+      </div>
+
+      <!-- Question Title -->
+      <div class="min-h-[72px] sm:min-h-[84px] flex items-center mb-6">
+        <h2 id="question-text" class="text-base sm:text-xl font-bold text-slate-800 leading-snug">
+          題目載入中...
+        </h2>
+      </div>
+
+      <!-- Options List -->
+      <div id="options-container" class="space-y-3">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Navigation & Keyboard hint -->
+      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+        <button id="btn-prev" class="hidden text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-1 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          上一題
+        </button>
+        <div class="ml-auto hidden sm:block text-[11px] text-slate-400">
+          可按鍵盤 <kbd class="px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 font-mono text-[10px]">1</kbd>～<kbd class="px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 font-mono text-[10px]">4</kbd> 快捷鍵作答
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCREEN 3: LOADING / CALCULATING ==================== -->
+    <section id="screen-loading" class="hidden glass-card rounded-3xl p-8 sm:p-12 text-center transition-all duration-300">
+      <div class="relative w-20 h-20 mx-auto mb-6">
+        <div class="absolute inset-0 rounded-full border-4 border-emerald-100 border-t-emerald-600 animate-spin"></div>
+        <div class="absolute inset-2 rounded-full bg-emerald-50 flex items-center justify-center text-2xl animate-pulse-subtle">
+          🌱
+        </div>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 mb-2">正在計算你的永續公民光譜...</h3>
+      <p id="loading-tip" class="text-slate-500 text-xs sm:text-sm animate-fade">
+        正在比對 EEWH 綠建築指標與碳排放數據...
+      </p>
+    </section>
+
+    <!-- ==================== SCREEN 4: RESULT ==================== -->
+    <section id="screen-result" class="hidden transition-all duration-300 space-y-4">
+
+      <!-- Shareable Result Card (for Canvas capture & display) -->
+      <div id="result-card-element" class="glass-card rounded-3xl p-5 sm:p-8 text-slate-800 relative overflow-hidden border border-emerald-100">
+        <!-- Background subtle watermark pattern -->
+        <div class="absolute -right-8 -top-8 w-40 h-40 bg-emerald-200/30 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Top Badge -->
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <div class="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+            <span>🌍</span>
+            <span>2050 永續公民特質檢測</span>
+          </div>
+          <span class="text-[11px] font-mono text-slate-400">NO.2050-AR6</span>
+        </div>
+
+        <!-- Archetype Header -->
+        <div class="text-center mb-5">
+          <div id="result-emoji" class="text-5xl sm:text-6xl mb-3 drop-shadow-sm inline-block">🏛️</div>
+          <div id="result-slogan" class="text-xs sm:text-sm font-semibold tracking-wider text-emerald-600 uppercase mb-1">每一平方公尺，都是對地球的溫柔計算</div>
+          <h2 id="result-title" class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            澄毓系·低碳築境師
+          </h2>
+        </div>
+
+        <!-- Trait Tags -->
+        <div id="result-tags" class="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Radar Chart Container -->
+        <div class="bg-slate-50/90 rounded-2xl p-3 sm:p-4 mb-5 border border-slate-100 flex flex-col items-center">
+          <div class="text-xs font-bold text-slate-600 mb-1 flex items-center gap-1">
+            <span>📊</span> 永續公民 5 維能力光譜
+          </div>
+          <div class="w-full max-w-[280px] sm:max-w-[320px] aspect-square flex items-center justify-center">
+            <canvas id="radarCanvas" width="320" height="320" class="w-full h-full"></canvas>
+          </div>
+        </div>
+
+        <!-- Personality Profile & In-class Easter Egg -->
+        <div class="space-y-3 text-xs sm:text-sm leading-relaxed mb-5">
+          <div class="bg-white/80 rounded-xl p-3.5 border border-slate-100">
+            <div class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+              <span>🧠</span> 深度特質解讀
+            </div>
+            <p id="result-desc" class="text-slate-600">
+              描述文字載入中...
+            </p>
+          </div>
+
+          <div class="bg-emerald-50/80 rounded-xl p-3.5 border border-emerald-100/80">
+            <div class="font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
+              <span>💡</span> 課堂精華對應彩蛋
+            </div>
+            <p id="result-easteregg" class="text-emerald-800 text-xs sm:text-[13px]">
+              彩蛋文字載入中...
+            </p>
+          </div>
+        </div>
+
+        <!-- Match & Pet Peeve -->
+        <div class="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs mb-4">
+          <div class="bg-emerald-50/60 rounded-xl p-3 border border-emerald-100">
+            <div class="font-bold text-emerald-800 mb-1">🤝 速配神隊友</div>
+            <div id="result-bestmatch" class="text-slate-700 font-medium">載入中...</div>
+          </div>
+          <div class="bg-rose-50/60 rounded-xl p-3 border border-rose-100">
+            <div class="font-bold text-rose-800 mb-1">⚡ 致命雷點</div>
+            <div id="result-petpeeve" class="text-slate-700 font-medium">載入中...</div>
+          </div>
+        </div>
+
+        <!-- 2050 Action Suggestion -->
+        <div class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs sm:text-sm leading-relaxed">
+          <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+            <span>🎯</span> 你的 2050 青年實踐指南
+          </div>
+          <p id="result-action" class="text-slate-300 text-xs sm:text-[13px]">
+            行動指南載入中...
+          </p>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 text-center text-[10px] sm:text-xs text-slate-400">
+          《永續公民實踐》期中創意作業 · 設計者：林世偉
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+        <button id="btn-download" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>下載結果卡片 (PNG)</span>
+        </button>
+        <button id="btn-copy" class="py-3 px-4 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+          <span id="btn-copy-text">複製測驗結果</span>
+        </button>
+        <button id="btn-restart" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-600 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          <span>重新測驗</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Sound Audio Synth -->
+  <script>
+    // Web Audio Synthesizer for lightweight joyful sound effects
+    const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+    function playTone(freq, type, duration) {
+      if (!audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+    function soundSelect() { playTone(523.25, 'sine', 0.12); } // C5
+    function soundNext() { playTone(659.25, 'triangle', 0.15); } // E5
+    function soundWin() {
+      setTimeout(() => playTone(523.25, 'sine', 0.18), 0);
+      setTimeout(() => playTone(659.25, 'sine', 0.18), 120);
+      setTimeout(() => playTone(783.99, 'sine', 0.28), 240);
+    }
+  </script>
+
+  <!-- Application Logic -->
+  <script>
+    // 6 Scenarios tightly coupled with the lecture slides
+    const questions = [
+      {
+        badge: "Q1 · 跨世代叩問",
+        text: "課堂簡報算出「從 2026 年算起，距離 2050 年僅剩 24 年」，看著這條時間線，你的第一直覺是？",
+        options: [
+          { text: "算了一下我那時大約 45 歲正值壯年，這絕對是我們這代人的切身之戰！", type: "VANGUARD", emoji: "🔥" },
+          { text: "立刻想像 2050 年的未來城市——建築必須冬暖夏涼、自己發電又省水！", type: "ARCHITECT", emoji: "🏙️" },
+          { text: "好奇那時的綠能工程是否真能做到完全不干擾野生動物與鳥類遷徙？", type: "GUARDIAN", emoji: "🦅" },
+          { text: "擔心極端氣候災難會讓社會弱勢承受不對等代價，公正轉型迫在眉睫。", type: "JUSTICE", emoji: "⚖️" }
+        ]
+      },
+      {
+        badge: "Q2 · 破除生活迷思",
+        text: "夏天酷暑回到悶熱如烤箱的房間，以下哪種日常思維最符合你的「永續執念」？",
+        options: [
+          { text: "開 27 度配循環扇，並拉好窗簾隔熱——落實建築外殼遮陽與節能技術！", type: "ARCHITECT", emoji: "🌬️" },
+          { text: "深知每度電都牽動遠方電網與海邊風場，堅持絕不開 18 度蓋棉被！", type: "GUARDIAN", emoji: "💡" },
+          { text: "推動房東改換一級能效家電，爭取租屋族合理的電費與生活權益！", type: "JUSTICE", emoji: "📋" },
+          { text: "邊吹冷氣邊檢視自己的日常碳足跡，將綠色通勤與微行動融入作息！", type: "VANGUARD", emoji: "🚲" }
+        ]
+      },
+      {
+        badge: "Q3 · 風電與生態共存",
+        text: "在台灣海峽建設離岸風機時，若偵測到大批候鳥遷徙通過，你最在意的解法是？",
+        options: [
+          { text: "在 1,315 公尺外用 AI 雷達辨識鳥種並主動降速，嚴守衝擊減輕順序！", type: "GUARDIAN", emoji: "🎯" },
+          { text: "追求再生能源的同時必須恪守科學審慎，不能以摧毀生態換取減碳！", type: "JUSTICE", emoji: "🛡️" },
+          { text: "優化風機葉片材料與減振降噪工法，讓工程與海洋環境共融共生。", type: "ARCHITECT", emoji: "⚙️" },
+          { text: "在氣候急迫性與生物多樣性間找到動態平衡，是綠能轉型的必修難題。", type: "VANGUARD", emoji: "🌊" }
+        ]
+      },
+      {
+        badge: "Q4 · 綠建築超能力",
+        text: "如果能為你未來的家或辦公室賦予一項「綠建築超能力」，你首選哪一項？",
+        options: [
+          { text: "【SC 鋼構減碳軀體】：建材生產與運輸直接減碳 29%，安全耐久又低碳！", type: "ARCHITECT", emoji: "🏗️" },
+          { text: "【基地保水生態綠洲】：雨水回收分級再利用，露台打造候鳥與昆蟲中繼站！", type: "GUARDIAN", emoji: "🌿" },
+          { text: "【綠色金融神之卡】：直接享有 0.5% 房貸減碼、容積獎勵與低耗水費優惠！", type: "JUSTICE", emoji: "💰" },
+          { text: "【近零碳整合核心】：2050 達到 100% 新建近零碳建築，走在法規最前端！", type: "VANGUARD", emoji: "⚡" }
+        ]
+      },
+      {
+        badge: "Q5 · 拆解企業漂綠",
+        text: "某企業發新聞稿宣布「全公司改用環保紙吸管，是最永續企業」，你心裡的真實 OS 是？",
+        options: [
+          { text: "「請看國家人權委員會標準！你的供應鏈是否落實人權與勞工盡職調查？」", type: "JUSTICE", emoji: "🧐" },
+          { text: "「別只看末端！廠房有沒有 EEWH 認證？SC 結構與製程能耗盤查了沒？」", type: "ARCHITECT", emoji: "📐" },
+          { text: "「拿吸管當擋箭牌，不如去守護被開發案威脅的高風險生態熱區！」", type: "GUARDIAN", emoji: "🦤" },
+          { text: "「金管會上市櫃永續路徑圖已啟動，請拿出範疇一二三的真實碳盤查報告！」", type: "VANGUARD", emoji: "📊" }
+        ]
+      },
+      {
+        badge: "Q6 · 跨領域公民使命",
+        text: "課堂總結金句：「永續不是單一科系的專利，而是所有專業都能連結的能力。」你的實踐是？",
+        options: [
+          { text: "帶上我的專業（商管/法律/資工/工程），在真實世界找到撬動永續的支點！", type: "VANGUARD", emoji: "🚀" },
+          { text: "用空間設計、智慧能源與低碳建材，打造對人與土地都友善的物理載體！", type: "ARCHITECT", emoji: "🏡" },
+          { text: "替無法言語的萬物發聲，讓任何一項重大決策都保留生態喘息的餘地！", type: "GUARDIAN", emoji: "🌍" },
+          { text: "監督政策制度與企業社會責任，確保在碳有價時代沒有任何人被遺落！", type: "JUSTICE", emoji: "✊" }
+        ]
+      }
+    ];
+
+    // Archetype definitions
+    const archetypes = {
+      ARCHITECT: {
+        id: "ARCHITECT",
+        emoji: "🏛️",
+        slogan: "每一平方公尺，都是對地球的溫柔計算",
+        title: "澄毓系·低碳築境師",
+        tags: ["#EEWH九大指標", "#SC鋼構減碳29%", "#雨水回收魔法師", "#空間控溫達人"],
+        scores: [95, 92, 78, 80, 86], // [減碳實力, 空間工法, 生態感知, 政策敏銳, 行動爆發]
+        desc: "你深信「永續不是空談哲學，而是落實在每一塊磚石與水管裡的精確科學」。你對空間、能源與材料擁有天生敏銳度，比起口號，你更著迷於 SC 鋼構相比傳統 RC 混凝土能狂減 29% 碳排的實證數據。在你看來，一棟懂得呼吸與循環的綠建築，就是城市抵禦極端氣候的最強堡壘。",
+        easteregg: "課堂關鍵密碼：澄毓綠建築設計顧問周澤亞經理分享之 EEWH 九大指標、行政院 2050 近零建築路徑、鋼構建築減碳 29%。",
+        bestmatch: "⚖️ 仲裁者·ESG 人權法官（幫你的綠建築爭取容積與政策獎勵）",
+        petpeeve: "把辦公室擺兩盆黃金葛就自稱綠建築的建商、開 18 度吹冷氣蓋羽絨被的人。",
+        action: "從今天起落實宿舍與居家微節能，挑選租屋時留意採光通風，未來職涯將低碳工法與能效思維導入專業領域！"
+      },
+      GUARDIAN: {
+        id: "GUARDIAN",
+        emoji: "🦅",
+        slogan: "即使追逐綠能，也不忘在 1,315 公尺外凝視羽翼",
+        title: "翱翔者·生態守護鳥",
+        tags: ["#衝擊減輕四部曲", "#1315米鷹眼辨識", "#拒絕以綠之名漂綠", "#生物多樣性守護者"],
+        scores: [82, 76, 98, 82, 88],
+        desc: "你擁有廣袤的宏觀視野與深厚的大地共感。你清楚知道發展再生能源是為了拯救地球，但絕不能以踐踏腳下的生態為代價。課堂上「避免、最小化、復育、抵換」的減輕順序已深植你心，你能洞悉科技與自然和解的可能，是所有人狂熱衝刺時最清醒的生態煞車皮。",
+        easteregg: "課堂關鍵密碼：離岸風電 1,315 公尺遠距離鳥類監測、生態衝擊減輕順序（避免 ➔ 最小化 ➔ 復育 ➔ 抵換）。",
+        bestmatch: "🚀 未來人·2050 逆轉先鋒（能理解你的堅持，並把生態保育化為前瞻政策）",
+        petpeeve: "喊著「為了蓋風機與光電犧牲一兩片濕地無所謂啦」的功利主義者。",
+        action: "關注公共工程環評與在地生態議題，在日常生活中拒絕破壞棲地的過度消費，為自然萬物保留永續空間！"
+      },
+      JUSTICE: {
+        id: "JUSTICE",
+        emoji: "⚖️",
+        slogan: "沒有人權與公平的綠色轉型，只是一場華麗的漂綠",
+        title: "仲裁者·ESG 人權法官",
+        tags: ["#國家人權委員會", "#巴黎原則", "#供應鏈盡職調查", "#專治表面功夫"],
+        scores: [80, 75, 84, 98, 85],
+        desc: "你具備洞察本質的法眼與深切的人文關懷。你深知 ESG 的靈魂在於「S（社會共融）」與「G（良善治理）」，任何把永續窄化成「隨手做環保」的說詞都逃不過你的審查。你關心公正轉型，絕不容許底層移工或弱勢群體成為減碳政策下的犧牲品，是推動體制改革最堅毅的力量。",
+        easteregg: "課堂關鍵密碼：國家人權委員會鄒筱涵執行秘書主講「人權與公司治理及 ESG 社會責任」、企業人權盡職調查、巴黎原則。",
+        bestmatch: "🏛️ 澄毓系·低碳築境師（一個提供嚴謹制度保障，一個提供實體低碳解方）",
+        petpeeve: "把塑膠吸管換成紙吸管就發新聞稿大宣傳「我們超永續」的企業公關。",
+        action: "在求職與消費時審視企業 ESG 報告書的實質性，關注氣候弱勢群體權益，運用制度與法律智慧促成社會公平！"
+      },
+      VANGUARD: {
+        id: "VANGUARD",
+        emoji: "🚀",
+        slogan: "2050 不是遙遠的死線，而是我們即將接管的盛世",
+        title: "未來人·2050 逆轉先鋒",
+        tags: ["#IPCC倒數24年", "#跨領域通識王", "#碳有價時代先行者", "#行動派公民"],
+        scores: [90, 84, 85, 92, 98],
+        desc: "你是最具感染力的跨界行動家！當別人還在為 2050 年的氣候預測焦慮時，你已經開始規劃如何運用自己的專業介入這場歷史轉型。你把「永續不是單一科系的專利」奉為圭臬，無論身在何處，都能將碳資產、日常微行動與社會創新無縫串聯，是帶領同儕迎戰綠色通膨的領頭羊。",
+        easteregg: "課堂關鍵密碼：IPCC AR6 跨世代氣候變遷曲線、金管會上市櫃永續路徑圖、打破永續傳統迷思。",
+        bestmatch: "🦅 翱翔者·生態守護鳥（隨時提醒你莫忘初心，保持對生命的謙遜）",
+        petpeeve: "抱持「反正 2050 我都老了，留給下一代煩惱」心態的擺爛躺平族。",
+        action: "將課堂所學的碳費與永續路徑轉化為個人跨界競爭力，從隨手小選擇開始，帶動身邊朋友成為有意識的永續公民！"
+      }
+    };
+
+    // State Variables
+    let currentQ = 0;
+    let answers = [];
+    const scores = { ARCHITECT: 0, GUARDIAN: 0, JUSTICE: 0, VANGUARD: 0 };
+
+    // Elements
+    const screenIntro = document.getElementById('screen-intro');
+    const screenQuiz = document.getElementById('screen-quiz');
+    const screenLoading = document.getElementById('screen-loading');
+    const screenResult = document.getElementById('screen-result');
+
+    const btnStart = document.getElementById('btn-start');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnRestart = document.getElementById('btn-restart');
+    const btnDownload = document.getElementById('btn-download');
+    const btnCopy = document.getElementById('btn-copy');
+
+    const quizStepBadge = document.getElementById('quiz-step-badge');
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+
+    // Start Quiz
+    btnStart.addEventListener('click', () => {
+      soundNext();
+      screenIntro.classList.add('hidden');
+      screenQuiz.classList.remove('hidden');
+      currentQ = 0;
+      answers = [];
+      Object.keys(scores).forEach(k => scores[k] = 0);
+      renderQuestion();
+    });
+
+    // Render Question
+    function renderQuestion() {
+      const q = questions[currentQ];
+      quizStepBadge.textContent = q.badge;
+      const pct = Math.round(((currentQ + 1) / questions.length) * 100);
+      quizProgressText.textContent = `${pct}%`;
+      quizProgressBar.style.width = `${pct}%`;
+      questionText.textContent = q.text;
+
+      btnPrev.classList.toggle('hidden', currentQ === 0);
+
+      optionsContainer.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "option-btn w-full p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 bg-white/80 text-left text-xs sm:text-sm font-medium text-slate-700 flex items-start gap-3 shadow-sm";
+        btn.innerHTML = `
+          <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-slate-100 flex items-center justify-center text-sm sm:text-base shrink-0 font-bold text-slate-600">
+            ${opt.emoji}
+          </div>
+          <div class="flex-1 pt-0.5 leading-relaxed text-slate-800">
+            ${opt.text}
+          </div>
+          <div class="hidden sm:flex text-[11px] font-mono text-slate-300 items-center justify-center w-5 h-5 rounded border border-slate-100">
+            ${idx + 1}
+          </div>
+        `;
+        btn.addEventListener('click', () => chooseOption(opt.type));
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    // Handle Option Selection
+    function chooseOption(type) {
+      soundSelect();
+      if (navigator.vibrate) navigator.vibrate(20);
+      answers[currentQ] = type;
+
+      if (currentQ < questions.length - 1) {
+        currentQ++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    // Previous Button
+    btnPrev.addEventListener('click', () => {
+      if (currentQ > 0) {
+        currentQ--;
+        renderQuestion();
+      }
+    });
+
+    // Keyboard Shortcuts (1-4, A-D)
+    window.addEventListener('keydown', (e) => {
+      if (screenQuiz.classList.contains('hidden')) return;
+      const keyMap = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3, 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+      if (keyMap.hasOwnProperty(e.key)) {
+        const idx = keyMap[e.key];
+        const q = questions[currentQ];
+        if (q && q.options[idx]) {
+          chooseOption(q.options[idx].type);
+        }
+      }
+    });
+
+    // Calculate Result
+    function finishQuiz() {
+      screenQuiz.classList.add('hidden');
+      screenLoading.classList.remove('hidden');
+
+      // Tally scores
+      Object.keys(scores).forEach(k => scores[k] = 0);
+      answers.forEach(type => {
+        if (scores[type] !== undefined) scores[type] += 1;
+      });
+
+      // Find top archetype
+      let topType = "VANGUARD";
+      let maxScore = -1;
+      Object.entries(scores).forEach(([type, count]) => {
+        if (count > maxScore) {
+          maxScore = count;
+          topType = type;
+        }
+      });
+
+      // Flashing tips
+      const tips = [
+        "正在整合行政院 2050 淨零路徑規劃...",
+        "正在連線 1,315 公尺鳥類遠距雷達追蹤...",
+        "正在計算 SC 鋼構與 RC 混凝土碳排比...",
+        "正在查核國家人權委員會 ESG 盡職調查清單..."
+      ];
+      let tIdx = 0;
+      const tipElem = document.getElementById('loading-tip');
+      const interval = setInterval(() => {
+        tIdx = (tIdx + 1) % tips.length;
+        tipElem.textContent = tips[tIdx];
+      }, 400);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        soundWin();
+        renderResult(archetypes[topType]);
+      }, 1500);
+    }
+
+    // Render Result
+    function renderResult(data) {
+      screenLoading.classList.add('hidden');
+      screenResult.classList.remove('hidden');
+
+      document.getElementById('result-emoji').textContent = data.emoji;
+      document.getElementById('result-slogan').textContent = data.slogan;
+      document.getElementById('result-title').textContent = data.title;
+
+      const tagContainer = document.getElementById('result-tags');
+      tagContainer.innerHTML = '';
+      data.tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = "px-2.5 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-[11px] sm:text-xs font-semibold";
+        span.textContent = t;
+        tagContainer.appendChild(span);
+      });
+
+      document.getElementById('result-desc').textContent = data.desc;
+      document.getElementById('result-easteregg').textContent = data.easteregg;
+      document.getElementById('result-bestmatch').textContent = data.bestmatch;
+      document.getElementById('result-petpeeve').textContent = data.petpeeve;
+      document.getElementById('result-action').textContent = data.action;
+
+      // Draw Radar Chart
+      setTimeout(() => {
+        drawRadarChart(data.scores);
+      }, 50);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Draw Radar Chart on HTML5 Canvas
+    function drawRadarChart(scoreValues) {
+      const canvas = document.getElementById('radarCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = width * 0.38;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const labels = ["減碳實力", "空間工法", "生態感知", "政策敏銳", "行動爆發"];
+      const totalPoints = labels.length;
+      const angleStep = (Math.PI * 2) / totalPoints;
+
+      // Draw concentric pentagons (grid)
+      const levels = 4;
+      for (let level = 1; level <= levels; level++) {
+        const r = (radius / levels) * level;
+        ctx.beginPath();
+        for (let i = 0; i < totalPoints; i++) {
+          const angle = i * angleStep - Math.PI / 2;
+          const x = centerX + Math.cos(angle) * r;
+          const y = centerY + Math.sin(angle) * r;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.28)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Draw axes
+      for (let i = 0; i < totalPoints; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+        ctx.stroke();
+
+        // Draw Labels
+        const labelRadius = radius + 22;
+        const lx = centerX + Math.cos(angle) * labelRadius;
+        const ly = centerY + Math.sin(angle) * labelRadius;
+        ctx.font = "bold 13px 'Noto Sans TC', sans-serif";
+        ctx.fillStyle = "#334155";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(labels[i], lx, ly);
+      }
+
+      // Draw Data Polygon
+      ctx.beginPath();
+      for (let i = 0; i < totalPoints; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const normalizedVal = (scoreValues[i] / 100) * radius;
+        const x = centerX + Math.cos(angle) * normalizedVal;
+        const y = centerY + Math.sin(angle) * normalizedVal;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = "rgba(16, 185, 129, 0.32)";
+      ctx.fill();
+      ctx.strokeStyle = "#059669";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Draw Data Points
+      for (let i = 0; i < totalPoints; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const normalizedVal = (scoreValues[i] / 100) * radius;
+        const x = centerX + Math.cos(angle) * normalizedVal;
+        const y = centerY + Math.sin(angle) * normalizedVal;
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+        ctx.strokeStyle = "#047857";
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+    }
+
+    // Restart Button
+    btnRestart.addEventListener('click', () => {
+      soundSelect();
+      screenResult.classList.add('hidden');
+      screenIntro.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Copy Result Link / Text
+    btnCopy.addEventListener('click', () => {
+      soundSelect();
+      const title = document.getElementById('result-title').textContent.trim();
+      const slogan = document.getElementById('result-slogan').textContent.trim();
+      const text = `🌱 我在《永續公民實踐》測出了我的 2050 永續屬性：【${title}】！\n「${slogan}」\n距離 2050 僅剩 24 年，快來測測你在這座島嶼扮演什麼關鍵角色！`;
+      navigator.clipboard.writeText(text).then(() => {
+        const txt = document.getElementById('btn-copy-text');
+        txt.textContent = "已複製結果！";
+        setTimeout(() => txt.textContent = "複製測驗結果", 2000);
+      });
+    });
+
+    // Save as Image (Using built-in Canvas snapshot)
+    btnDownload.addEventListener('click', () => {
+      soundSelect();
+      const card = document.getElementById('result-card-element');
+      const title = document.getElementById('result-title').textContent.trim();
+      const slogan = document.getElementById('result-slogan').textContent.trim();
+      const emoji = document.getElementById('result-emoji').textContent.trim();
+      const desc = document.getElementById('result-desc').textContent.trim();
+      const easteregg = document.getElementById('result-easteregg').textContent.trim();
+
+      // Create a high-res offscreen canvas (1080 x 1440 - standard Instagram story ratio)
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = 1080;
+      exportCanvas.height = 1440;
+      const ctx = exportCanvas.getContext('2d');
+
+      // Draw Background
+      const gradient = ctx.createLinearGradient(0, 0, 1080, 1440);
+      gradient.addColorStop(0, '#f0fdf4');
+      gradient.addColorStop(0.4, '#ecfdf5');
+      gradient.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 1080, 1440);
+
+      // Card frame
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(16, 185, 129, 0.12)';
+      ctx.shadowBlur = 40;
+      ctx.shadowOffsetY = 20;
+      ctx.roundRect(70, 70, 940, 1300, 36);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+
+      // Border
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Top Header
+      ctx.font = 'bold 28px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#059669';
+      ctx.textAlign = 'left';
+      ctx.fillText('🌱 《永續公民實踐》期中特輯 · 2050 屬性檢測', 120, 150);
+
+      ctx.textAlign = 'right';
+      ctx.font = '24px monospace';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('NO.2050-AR6', 960, 150);
+
+      // Divider
+      ctx.beginPath();
+      ctx.moveTo(120, 180);
+      ctx.lineTo(960, 180);
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Emoji Avatar
+      ctx.font = '110px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(emoji, 540, 310);
+
+      // Slogan
+      ctx.font = 'bold 26px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#059669';
+      ctx.fillText(slogan, 540, 370);
+
+      // Title
+      ctx.font = 'bold 54px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(title, 540, 440);
+
+      // Draw Radar Chart from main canvas
+      const radarSrc = document.getElementById('radarCanvas');
+      ctx.drawImage(radarSrc, 340, 470, 400, 400);
+
+      // Description Box
+      ctx.fillStyle = '#f8fafc';
+      ctx.roundRect(120, 890, 840, 200, 24);
+      ctx.fill();
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 26px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText('🧠 深度特質解讀', 150, 935);
+
+      // Wrap text
+      function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        let words = text.split('');
+        let line = '';
+        for (let n = 0; n < words.length; n++) {
+          let testLine = line + words[n];
+          let metrics = context.measureText(testLine);
+          if (metrics.width > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = words[n];
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        context.fillText(line, x, y);
+      }
+
+      ctx.font = '22px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#475569';
+      wrapText(ctx, desc, 150, 975, 780, 34);
+
+      // Easter Egg Box
+      ctx.fillStyle = '#ecfdf5';
+      ctx.roundRect(120, 1110, 840, 140, 20);
+      ctx.fill();
+      ctx.strokeStyle = '#a7f3d0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = 'bold 24px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#065f46';
+      ctx.fillText('💡 課堂彩蛋密碼', 150, 1155);
+
+      ctx.font = '20px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#047857';
+      wrapText(ctx, easteregg, 150, 1195, 780, 30);
+
+      // Footer
+      ctx.textAlign = 'center';
+      ctx.font = '20px "Noto Sans TC", sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('實踐青年：林世偉 · 2050 從今天每一個選擇開始', 540, 1315);
+
+      // Trigger download
+      const link = document.createElement('a');
+      link.download = `2050永續公民屬性_${title}.png`;
+      link.href = exportCanvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+</body>
+</html>
