@@ -834,14 +834,18 @@
       ctx.fillRect(0, 0, 1080, 1560);
 
       // 2. White Card Container
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(60, 50, 960, 1460, 36);
       ctx.fillStyle = '#ffffff';
       ctx.shadowColor = 'rgba(16, 185, 129, 0.12)';
       ctx.shadowBlur = 45;
       ctx.shadowOffsetY = 20;
-      ctx.roundRect(60, 50, 960, 1460, 36);
       ctx.fill();
-      ctx.shadowColor = 'transparent';
+      ctx.restore();
 
+      ctx.beginPath();
+      ctx.roundRect(60, 50, 960, 1460, 36);
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 3;
       ctx.stroke();
@@ -892,8 +896,9 @@
 
         tags.forEach((t, i) => {
           const tw = tagWidths[i];
-          ctx.fillStyle = '#ecfdf5';
+          ctx.beginPath();
           ctx.roundRect(curTagX, tagY, tw, 34, 17);
+          ctx.fillStyle = '#ecfdf5';
           ctx.fill();
           ctx.strokeStyle = '#a7f3d0';
           ctx.lineWidth = 1.5;
@@ -1043,59 +1048,63 @@
 
       // 7. Box 1: 🧠 深度特質解讀
       const b1_y = 705;
-      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
       ctx.roundRect(115, b1_y, 850, 205, 22);
+      ctx.fillStyle = '#f8fafc';
       ctx.fill();
-      ctx.strokeStyle = '#e2e8f0';
+      ctx.strokeStyle = '#cbd5e1';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.font = 'bold 23px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#1e293b';
+      ctx.fillStyle = '#0f172a';
       ctx.fillText('🧠 深度特質解讀', 145, b1_y + 18);
 
       ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#475569';
+      ctx.fillStyle = '#334155';
       drawWrap(ctx, desc, 145, b1_y + 58, 790, 31);
 
       // 8. Box 2: 🤝 速配神隊友 & ⚡ 致命雷點 (Two Side-by-Side Cards)
       const b2_y = 930;
-      // Best match (Left)
-      ctx.fillStyle = '#f0fdf4';
+      // Best match (Left Card)
+      ctx.beginPath();
       ctx.roundRect(115, b2_y, 415, 165, 20);
+      ctx.fillStyle = '#f0fdf4';
       ctx.fill();
-      ctx.strokeStyle = '#bbf7d0';
+      ctx.strokeStyle = '#86efac';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.font = 'bold 21px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#166534';
+      ctx.fillStyle = '#15803d';
       ctx.fillText('🤝 速配神隊友', 140, b2_y + 18);
       ctx.font = '17px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#334155';
+      ctx.fillStyle = '#1e293b';
       drawWrap(ctx, bestmatch, 140, b2_y + 56, 365, 26);
 
-      // Pet peeve (Right)
-      ctx.fillStyle = '#fff1f2';
+      // Pet peeve (Right Card)
+      ctx.beginPath();
       ctx.roundRect(550, b2_y, 415, 165, 20);
+      ctx.fillStyle = '#fff1f2';
       ctx.fill();
-      ctx.strokeStyle = '#fecdd3';
+      ctx.strokeStyle = '#fda4af';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.font = 'bold 21px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#9f1239';
+      ctx.fillStyle = '#be123c';
       ctx.fillText('⚡ 致命雷點', 575, b2_y + 18);
       ctx.font = '17px "Noto Sans TC", -apple-system, sans-serif';
-      ctx.fillStyle = '#334155';
+      ctx.fillStyle = '#1e293b';
       drawWrap(ctx, petpeeve, 575, b2_y + 56, 365, 26);
 
       // 9. Box 3: 🎯 2050 青年實踐指南
       const b3_y = 1115;
-      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
       ctx.roundRect(115, b3_y, 850, 160, 22);
+      ctx.fillStyle = '#0f172a';
       ctx.fill();
       ctx.strokeStyle = '#334155';
       ctx.lineWidth = 2;
