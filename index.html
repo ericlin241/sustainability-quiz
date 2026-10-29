@@ -815,26 +815,30 @@
       const petpeeve = document.getElementById('result-petpeeve').textContent.trim();
       const action = document.getElementById('result-action').textContent.trim();
 
-      // High-res offscreen canvas (1080 x 1600)
+      // Retrieve current tags
+      const tagElements = document.querySelectorAll('#result-tags span');
+      const tags = Array.from(tagElements).map(el => el.textContent.trim());
+
+      // Master high-res canvas (1080 x 1560)
       const exportCanvas = document.createElement('canvas');
       exportCanvas.width = 1080;
-      exportCanvas.height = 1600;
+      exportCanvas.height = 1560;
       const ctx = exportCanvas.getContext('2d');
 
       // 1. Background Gradient
-      const gradient = ctx.createLinearGradient(0, 0, 1080, 1600);
+      const gradient = ctx.createLinearGradient(0, 0, 1080, 1560);
       gradient.addColorStop(0, '#f0fdf4');
       gradient.addColorStop(0.35, '#ecfdf5');
       gradient.addColorStop(1, '#e2e8f0');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 1080, 1600);
+      ctx.fillRect(0, 0, 1080, 1560);
 
       // 2. White Card Container
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(16, 185, 129, 0.14)';
+      ctx.shadowColor = 'rgba(16, 185, 129, 0.12)';
       ctx.shadowBlur = 45;
-      ctx.shadowOffsetY = 22;
-      ctx.roundRect(65, 65, 950, 1470, 36);
+      ctx.shadowOffsetY = 20;
+      ctx.roundRect(60, 50, 960, 1460, 36);
       ctx.fill();
       ctx.shadowColor = 'transparent';
 
@@ -843,142 +847,287 @@
       ctx.stroke();
 
       // 3. Top Header
-      ctx.font = 'bold 28px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = 'bold 24px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#059669';
       ctx.textAlign = 'left';
-      ctx.fillText('🌱 《永續公民實踐》期中特輯 · 2050 屬性檢測', 115, 145);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🌱 《永續公民實踐》期中特輯 · 2050 屬性檢測', 115, 105);
 
       ctx.textAlign = 'right';
-      ctx.font = 'bold 24px monospace, sans-serif';
+      ctx.font = 'bold 22px monospace, sans-serif';
       ctx.fillStyle = '#94a3b8';
-      ctx.fillText('NO.2050-AR6', 965, 145);
+      ctx.fillText('NO.2050-AR6', 965, 105);
 
-      // Divider line
+      // Header Divider
       ctx.beginPath();
-      ctx.moveTo(115, 175);
-      ctx.lineTo(965, 175);
+      ctx.moveTo(115, 140);
+      ctx.lineTo(965, 140);
       ctx.strokeStyle = '#f1f5f9';
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // 4. Emoji Avatar
-      ctx.font = '96px sans-serif';
+      // 4. Emoji Avatar & Header Info
+      ctx.font = '54px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(emoji, 540, 290);
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, 540, 185);
 
-      // 5. Slogan
-      ctx.font = 'bold 25px "Noto Sans TC", -apple-system, sans-serif';
+      // Slogan
+      ctx.font = 'bold 22px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#059669';
-      ctx.fillText(slogan, 540, 350);
+      ctx.fillText(slogan, 540, 235);
 
-      // 6. Title
-      ctx.font = 'bold 50px "Noto Sans TC", -apple-system, sans-serif';
+      // Title
+      ctx.font = 'bold 46px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#0f172a';
-      ctx.fillText(title, 540, 420);
+      ctx.fillText(title, 540, 285);
 
-      // 7. Radar Chart (Native high-res drawing)
-      ctx.save();
-      ctx.translate(140, 460);
-      drawRadarCore(ctx, 800, 420, currentScoreData, true);
-      ctx.restore();
+      // 5. Trait Tags (Prominently Displayed on Downloaded Card!)
+      if (tags.length > 0) {
+        ctx.font = 'bold 17px "Noto Sans TC", -apple-system, sans-serif';
+        const tagWidths = tags.map(t => ctx.measureText(t).width + 30);
+        const totalTagsW = tagWidths.reduce((a, b) => a + b, 0) + 12 * (tags.length - 1);
+        let curTagX = (1080 - totalTagsW) / 2;
+        const tagY = 328;
 
-      // Helper: wrap text
-      function wrapText(context, text, x, y, maxWidth, lineHeight) {
-        let chars = text.split('');
-        let line = '';
-        let currentY = y;
-        for (let n = 0; n < chars.length; n++) {
-          let testLine = line + chars[n];
-          let metrics = context.measureText(testLine);
-          if (metrics.width > maxWidth && n > 0) {
-            context.fillText(line, x, currentY);
-            line = chars[n];
-            currentY += lineHeight;
-          } else {
-            line = testLine;
-          }
-        }
-        context.fillText(line, x, currentY);
+        tags.forEach((t, i) => {
+          const tw = tagWidths[i];
+          ctx.fillStyle = '#ecfdf5';
+          ctx.roundRect(curTagX, tagY, tw, 34, 17);
+          ctx.fill();
+          ctx.strokeStyle = '#a7f3d0';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#065f46';
+          ctx.fillText(t, curTagX + tw / 2, tagY + 17);
+          curTagX += tw + 12;
+        });
       }
 
-      // 8. Box 1: 🧠 深度特質解讀
+      // 6. Radar Chart (Native Geometry, Safe Padding, Zero Overlap)
+      const rc_cx = 540;
+      const rc_cy = 530;
+      const rc_r = 120;
+      const labels = ["減碳實力", "空間工法", "生態感知", "政策敏銳", "行動爆發"];
+      const scoreValues = currentScoreData || [85, 85, 85, 85, 85];
+      const pts = 5;
+      const angleStep = (Math.PI * 2) / pts;
+
+      // Concentric web
+      for (let lvl = 1; lvl <= 5; lvl++) {
+        const r = (rc_r / 5) * lvl;
+        ctx.beginPath();
+        for (let i = 0; i < pts; i++) {
+          const ang = i * angleStep - Math.PI / 2;
+          const x = rc_cx + mathCos(ang, r);
+          const y = rc_cy + mathSin(ang, r);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = lvl === 5 ? "rgba(100, 116, 139, 0.4)" : "rgba(148, 163, 184, 0.22)";
+        ctx.lineWidth = lvl === 5 ? 2.5 : 1.5;
+        ctx.stroke();
+      }
+
+      // Axes
+      for (let i = 0; i < pts; i++) {
+        const ang = i * angleStep - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(rc_cx, rc_cy);
+        ctx.lineTo(rc_cx + mathCos(ang, rc_r), rc_cy + mathSin(ang, rc_r));
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.3)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      // Data Polygon
+      ctx.beginPath();
+      for (let i = 0; i < pts; i++) {
+        const ang = i * angleStep - Math.PI / 2;
+        const val = scoreValues[i] || 80;
+        const r = (val / 100) * rc_r;
+        const x = rc_cx + mathCos(ang, r);
+        const y = rc_cy + mathSin(ang, r);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      const fillGrad = ctx.createRadialGradient(rc_cx, rc_cy, 10, rc_cx, rc_cy, rc_r);
+      fillGrad.addColorStop(0, "rgba(52, 211, 153, 0.45)");
+      fillGrad.addColorStop(1, "rgba(16, 185, 129, 0.26)");
+      ctx.fillStyle = fillGrad;
+      ctx.fill();
+      ctx.strokeStyle = "#059669";
+      ctx.lineWidth = 4;
+      ctx.lineJoin = "round";
+      ctx.stroke();
+
+      // Data Points
+      for (let i = 0; i < pts; i++) {
+        const ang = i * angleStep - Math.PI / 2;
+        const val = scoreValues[i] || 80;
+        const r = (val / 100) * rc_r;
+        const x = rc_cx + mathCos(ang, r);
+        const y = rc_cy + mathSin(ang, r);
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+        ctx.strokeStyle = "#047857";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+
+      // Radar Labels & Scores (Zero Clipping Guaranteed)
+      for (let i = 0; i < pts; i++) {
+        const ang = i * angleStep - Math.PI / 2;
+        const lbl = labels[i];
+        const val = scoreValues[i] || 80;
+        const offset = 26;
+        const lx = rc_cx + mathCos(ang, rc_r + offset);
+        const ly = rc_cy + mathSin(ang, rc_r + offset);
+
+        ctx.font = 'bold 18px "Noto Sans TC", -apple-system, sans-serif';
+
+        if (i === 0) {
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+        } else if (i === 1) {
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+        } else if (i === 2) {
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+        } else if (i === 3) {
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'top';
+        } else if (i === 4) {
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+        }
+
+        ctx.fillStyle = '#1e293b';
+        ctx.fillText(`${lbl} ${val}`, lx, ly);
+      }
+
+      function mathCos(ang, r) { return Math.cos(ang) * r; }
+      function mathSin(ang, r) { return Math.sin(ang) * r; }
+
+      // Robust Text Wrapping helper (Supports newlines & character wrapping)
+      function drawWrap(context, text, x, y, maxW, lineH) {
+        const paragraphs = text.split('\n');
+        let curY = y;
+        for (const p of paragraphs) {
+          let line = '';
+          for (let n = 0; n < p.length; n++) {
+            const testLine = line + p[n];
+            const metrics = context.measureText(testLine);
+            if (metrics.width > maxW && n > 0) {
+              context.fillText(line, x, curY);
+              line = p[n];
+              curY += lineH;
+            } else {
+              line = testLine;
+            }
+          }
+          if (line) {
+            context.fillText(line, x, curY);
+            curY += lineH;
+          }
+        }
+      }
+
+      // 7. Box 1: 🧠 深度特質解讀
+      const b1_y = 705;
       ctx.fillStyle = '#f8fafc';
-      ctx.roundRect(115, 915, 850, 195, 20);
+      ctx.roundRect(115, b1_y, 850, 205, 22);
       ctx.fill();
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.textAlign = 'left';
-      ctx.font = 'bold 25px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.font = 'bold 23px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#1e293b';
-      ctx.fillText('🧠 深度特質解讀', 145, 955);
+      ctx.fillText('🧠 深度特質解讀', 145, b1_y + 18);
 
-      ctx.font = '21px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#475569';
-      wrapText(ctx, desc, 145, 995, 790, 32);
+      drawWrap(ctx, desc, 145, b1_y + 58, 790, 31);
 
-      // 9. Box 2: 🤝 速配神隊友 & ⚡ 致命雷點 (Two Side-by-Side Cards)
-      // Left card: Best match
+      // 8. Box 2: 🤝 速配神隊友 & ⚡ 致命雷點 (Two Side-by-Side Cards)
+      const b2_y = 930;
+      // Best match (Left)
       ctx.fillStyle = '#f0fdf4';
-      ctx.roundRect(115, 1125, 415, 130, 18);
+      ctx.roundRect(115, b2_y, 415, 165, 20);
       ctx.fill();
       ctx.strokeStyle = '#bbf7d0';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.font = 'bold 22px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = 'bold 21px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#166534';
-      ctx.fillText('🤝 速配神隊友', 140, 1162);
-      ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.fillText('🤝 速配神隊友', 140, b2_y + 18);
+      ctx.font = '17px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#334155';
-      wrapText(ctx, bestmatch, 140, 1200, 365, 28);
+      drawWrap(ctx, bestmatch, 140, b2_y + 56, 365, 26);
 
-      // Right card: Pet peeve
+      // Pet peeve (Right)
       ctx.fillStyle = '#fff1f2';
-      ctx.roundRect(550, 1125, 415, 130, 18);
+      ctx.roundRect(550, b2_y, 415, 165, 20);
       ctx.fill();
       ctx.strokeStyle = '#fecdd3';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.font = 'bold 22px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = 'bold 21px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#9f1239';
-      ctx.fillText('⚡ 致命雷點', 575, 1162);
-      ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.fillText('⚡ 致命雷點', 575, b2_y + 18);
+      ctx.font = '17px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#334155';
-      wrapText(ctx, petpeeve, 575, 1200, 365, 28);
+      drawWrap(ctx, petpeeve, 575, b2_y + 56, 365, 26);
 
-      // 10. Box 3: 🎯 2050 青年實踐指南
+      // 9. Box 3: 🎯 2050 青年實踐指南
+      const b3_y = 1115;
       ctx.fillStyle = '#0f172a';
-      ctx.roundRect(115, 1270, 850, 160, 20);
+      ctx.roundRect(115, b3_y, 850, 160, 22);
       ctx.fill();
       ctx.strokeStyle = '#334155';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.font = 'bold 24px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = 'bold 23px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#34d399';
-      ctx.fillText('🎯 你的 2050 青年實踐指南', 145, 1312);
+      ctx.fillText('🎯 你的 2050 青年實踐指南', 145, b3_y + 20);
 
-      ctx.font = '21px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#e2e8f0';
-      wrapText(ctx, action, 145, 1352, 790, 32);
+      drawWrap(ctx, action, 145, b3_y + 62, 790, 31);
 
-      // 11. Footer
+      // 10. Footer (Author & URL)
       ctx.textAlign = 'center';
-      ctx.font = '21px "Noto Sans TC", -apple-system, sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.font = '19px "Noto Sans TC", -apple-system, sans-serif';
       ctx.fillStyle = '#94a3b8';
-      ctx.fillText('實踐青年：林世偉 · 《永續公民實踐》期中創意作業', 540, 1495);
+      ctx.fillText('實踐青年：林世偉 · 《永續公民實踐》期中創意作業', 540, 1315);
 
-      // Export image & Handle iOS Safari Web Share vs Modal
+      ctx.font = '15px monospace, sans-serif';
+      ctx.fillStyle = '#b0c4de';
+      ctx.fillText('https://ericlin241.github.io/sustainability-quiz/', 540, 1345);
+
+      // Export file & Trigger iOS Share vs Modal Fallback
       const filename = `2050永續公民屬性_${title}.png`;
       
       exportCanvas.toBlob(async (blob) => {
         if (!blob) return;
         const file = new File([blob], filename, { type: 'image/png' });
 
-        // iOS Safari Web Share API (Save Image to Photos natively)
+        // iOS Safari Native Web Share API
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
@@ -988,11 +1137,11 @@
             });
             return;
           } catch (err) {
-            if (err.name === 'AbortError') return; // User simply closed the share sheet
+            if (err.name === 'AbortError') return; // User closed share sheet
           }
         }
 
-        // Fallback for Desktop & Browsers without Web Share: Show Image Preview Modal + direct download link
+        // Fallback for Desktop & other browsers
         const dataUrl = exportCanvas.toDataURL('image/png');
         const modal = document.getElementById('image-modal');
         const modalImg = document.getElementById('modal-image');
